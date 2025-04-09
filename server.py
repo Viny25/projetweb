@@ -252,16 +252,41 @@ def add_objet():
 def modifier_obj(id):
     # Récupérer l'objet à modifier
     objet = model.detail_objet(id)
+    courant = model.get_etablissement_name(objet['etid'])
     
     etablissements = model.liste_etablissement()
     
     return render_template('updateobjet.html', 
-                         objet=objet, 
+                         objet=objet,courant=courant, 
                          etablissements=etablissements)
+
+
+@app.route('/modifier_obj/<int:id>', methods=['post'])
+def updateobj(id):
+    etablissements = model.liste_etablissement()
+
+    objet = model.detail_objet(id)
+    image = objet['image']
+    image_file= request.files['image']
+    post=request.form['post']
+    etablissement = request.form['etablissement']
+
+    etid=model.found_etablisement(etablissement)
+    if image==image_file.filename or not image_file:
+        res = model.update_objet(image,etid['id'],post,id)
+        return redirect(url_for('detail',id=id))
+    
+    filname= save_uploaded_file(image_file)
+    res = model.update_objet(filname,etid['id'],post,id)
+
+    return redirect(url_for('detail',id=id))
+
+
 @app.get('/admi')
 def  admi():
     error=None
     return render_template('admi.html', session = session,error=error)
+    
 @app.post('/admi')
 def add_admi():
     error = None
