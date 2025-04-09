@@ -81,48 +81,31 @@ def newuserf():
 
 @app.post('/newuser')
 def newuser():
-    try:
-        liste = model.liste_etablissement()
-       
-        username = request.form['username']
-        password = request.form['password']
-        etablissement = request.form['etablissement']
-        image_file = request.files['image']
+    etablissements = model.liste_etablissement()
+    error= None
+    if not all([request.files['image'],request.form['username'],request.form['password'],request.form['etablissement']]):
+        error=('Tous les champs sont obligatoires', 'error')
+        return render_template('newuser.html',session=session,etablissements=etablissements,error=error)
+    image_file = request.files['image']
+    etablissement_name = request.form['etablissement']
+    password=request.form['password']
+    username= request.form['username']
 
-        if not all([username, password, etablissement, image_file]):
-            error=('Tous les champs sont obligatoires')
-            return (render_template('newuser.html', session=session, liste = liste,error = error ))
-
+    if model.user_existe(username):
+        error=("ce nom d'itilisateur existe déjà")
+        return render_template('newuser.html',session=session,etablissements=etablissements,error=error)
+    etablissement= model.found_etablisement(etablissement_name)
+    if etablissement is None:
+        error =('Établissement invalide', 'error')
+        return render_template('newuser.html',session=session,etablissements=etablissement,error=error)
+    image_filename=save_uploaded_file(image_file)
+    res=model.user_insert(username,password,image_filename,etablissement['id'])
+    if res:
+        error ="compte creer connectez-vous"
+        return render_template('login.html',session=session,error = error)
     
-        if model.user_existe(username):
-            error= ("Ce nom d'utilisateur existe déjà")
-            return (render_template('newuser.html', session=session, liste = liste,error = error ))
-
-        etablissement_info = model.found_etablisement(etablissement)
-        if not etablissement_info:
-            error=('Établissement non trouvé', 'error')
-            return (render_template('newuser.html', session=session, liste = liste,error = error ))
-        
-
-        filename = save_uploaded_file(image_file)
-
-
-        # Création de l'utilisateur
-        model.user_insert(
-            username=username,
-            password=password,
-            image=filename,  
-            etid=etablissement_info['id']
-        )
-
-        flash('Inscription réussie!', 'success')
-        return redirect(url_for('login'))
-
-    except Exception as e:
-        current_app.logger.error(f"Erreur inscription: {str(e)}")
-        error=("Une erreur est survenue lors de l'inscription", 'error')
-        return (render_template('newuser.html', session=session, liste = liste,error = error ))
     
+
 
 @app.get('/login')
 def page_login():
@@ -224,10 +207,11 @@ def log_out(): #Rammene à la page d'acceil en suppriment la session
 def detail(id): #donne les detaille d'un objet
    res=model.detail_objet(int(id))
    name = session['username']
+   current_et=model.get_etablissement_name(res['etid'])
    if (model.admi_exist(name)):
-      return render_template('detail.html',session=session, objet=res, admi=False)
+      return render_template('detail.html',session=session,courant=current_et, objet=res, admi=True)
    else:
-      return render_template('detail.html',session=session, objet=res, admi=True)
+      return render_template('detail.html',session=session,courant=current_et, objet=res, admi=False)
 
 @app.get('/remove_obj/<id>')  
 def remove_obj(id): #permet de supprimeer un objet de la  liste 
