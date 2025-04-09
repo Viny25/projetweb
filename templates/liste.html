@@ -1,0 +1,86 @@
+{%include "header.html" %}
+<div class="container mt-4">
+    <!-- Formulaire de recherche -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form action="{{ url_for('list_objet') }}" method="get" class=" align-items-center">
+                <div class="col-md-8">
+                    <label for="etablissement-select" class="form-label">Établissement</label>
+                    <input class="form-control" 
+                           name="etablissement"
+                           value="{{ current_etablissement }}"
+                           list="etablissement-list"
+                           id="etablissement-select"
+                           placeholder="Rechercher votre établissement"
+                           required>
+                    <datalist id="etablissement-list">
+                        {% for e in etablissements %}
+                        <option value="{{ e.name }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Rechercher
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Résultats -->
+    {% if liste %}
+    <div class="row row-cols-1 row-cols-md-5 row-cols-lg-3 g-4">
+        {% for objet in liste %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="position-relative" style="height: 200px;">
+                    <a href="{{ url_for('detail', id=objet.id) }}">
+                        {% if objet.image %}
+                        <img src="{{ url_for('static', filename='uploads/' + objet.image) }}" 
+                             class="img-fluid h-100 w-100 object-fit-cover"
+                             alt="Objet {{ objet.id }}">
+                        {% else %}
+                        <div class="h-100 w-100 bg-light d-flex align-items-center justify-content-center">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        {% endif %}
+                    </a>
+                </div>
+                
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-secondary">#{{ objet.id }}</span>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ objet.post|truncate(50) }}
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-white">
+                    <a href="{{ url_for('detail', id=objet.id) }}" 
+                       class="btn btn-outline-primary w-100">
+                       <i class="fas fa-eye me-2"></i>Voir détails
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center py-4">
+        <i class="fas fa-info-circle me-2"></i>
+        Aucun objet trouvé pour cet établissement.
+        {% if etablissement_id %}
+        <a href="{{ url_for('add_objet', etablissement_id=etablissement_id) }}" class="alert-link ms-2">
+            Ajouter un objet
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+
+
+{%include "footer.html" %}

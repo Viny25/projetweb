@@ -1,0 +1,35 @@
+{%include "header.html" %}
+
+<div class="min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+    <div class="w-100" style="max-width: 400px;">
+        
+        <div class="text-center mb-4">
+            <h2 class="text-dark">Connexion</h2>
+        </div>
+
+      
+        <form class="border p-4 rounded shadow-sm bg-white" action="/admi" method="post">
+       
+            {% if error %}
+            <div class="alert alert-danger mb-3">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" class="form-control" id="password" name="password" 
+                       placeholder="Entrez votre mot de passe" required>
+            </div>
+
+            <button type="submit" class="btn navbar-custom  w-100 py-2">
+                <p style="color: white;">Se connecter</p>
+            </button>
+
+        </form>
+    </div>
+</div>
+
+
+
+{%include "footer.html" %}

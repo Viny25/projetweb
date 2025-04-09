@@ -1,0 +1,70 @@
+{%include "header.html" %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <!-- Titre -->
+                <div class="card-header bg-primary text-white">
+                    <h1 class="h4 mb-0">Détails de l'objet</h1>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Image -->
+                    <div class="text-center mb-4">
+                        {% if objet.image %}
+                        <img src="{{ url_for('static', filename='uploads/' + objet.image) }}" 
+                             class="img-fluid rounded" 
+                             alt="Image de l'objet {{ objet.id }}"
+                             style="max-height: 400px; object-fit: contain;">
+                        {% else %}
+                        <div class="bg-light p-5 text-center">
+                            <i class="fas fa-image fa-5x text-muted"></i>
+                            <p class="mt-2">Aucune image disponible</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-4 p-3 border rounded bg-light">
+                        <h2 class="h5">Description :</h2>
+                        <p class="mb-0">{{ objet.post }}</p>
+                    </div>
+                    
+                    <!-- Métadonnées -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded text-center">
+                                <strong>Référence :</strong> {{ objet.id }}
+                            </div> 
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded text-center">
+                                <strong>Établissement :</strong> {{ courant }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Boutons d'action -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('modifier_obj', id=objet.id) }}" 
+                           class="btn btn-warning">
+                           <i class="fas fa-edit me-2"></i>Modifier
+                        </a>
+                        
+                        {% if admi %}
+                        <a href="{{ url_for('remove_obj', id=objet.id) }}" 
+                           class="btn btn-danger"
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet objet?');">
+                           <i class="fas fa-trash me-2"></i>Supprimer
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{%include "footer.html" %}

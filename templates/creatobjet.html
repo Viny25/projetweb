@@ -1,0 +1,54 @@
+{%include "header.html" %}
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+    {% if error %}
+    <p ><h2 style="color: rgb(249, 13, 13);">{{error}}</h2></p>
+    {% endif %}
+    
+    <form class="border p-4 rounded shadow" style="width: 400px;" action="/newobjet" method="post" enctype="multipart/form-data">
+        <!-- Champ pour l'image (important: enctype="multipart/form-data") -->
+        <div class="mb-3">
+            <label for="image" class="form-label">Image de l'objet</label>
+            <input class="form-control" type="file" name="image" id="image" accept="image/*" required>
+        </div>
+        
+        <!-- Champ pour l'établissement -->
+        <div class="mb-3">
+            <label for="etablissement" class="form-label">Établissement</label>
+            <input class="form-control" name="etablissement" list="etablissement" 
+                   id="etablissement" placeholder="Votre établissement" required>
+            <datalist id="etablissement">
+                {% if etablissements %}
+                    {% for etablissement in etablissements %}
+                        <option value="{{ etablissement.name }}">
+                    {% endfor %}
+                {% endif %}
+            </datalist>
+        </div>
+        
+        <!-- Champ pour la description -->
+        <div class="mb-3">
+            <label for="post" class="form-label">Description</label>
+            <textarea class="form-control" name="post" id="post" 
+                      placeholder="Décrivez l'objet en quelques mots" required></textarea>
+        </div>
+        
+        <!-- Boutons -->
+        <button type="submit" class="btn navbar-custom w-100 mb-2">
+            <span style="color: rgb(228, 223, 223);">Ajouter</span>
+        </button>
+        <a href="/index" class="btn btn-dark w-100">Annuler</a>
+    </form>
+    
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+{% include "footer.html" %}

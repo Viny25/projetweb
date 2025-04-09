@@ -1,0 +1,62 @@
+{%include "header.html" %}
+{% if error %}
+    <div class="alert alert-danger position-relative" style="top: -30px;">
+        {{ error }}
+        <a href="/index">page d'acceil</a>
+    </div>
+{% else %}
+    {% if liste %}
+        <div class="container mt-4">
+            <!-- Liste des objets -->
+            <div class="border p-4 rounded shadow mb-4" style="max-width: 900px; margin: 0 auto;">
+                <h3 class="mb-3">Objets trouvés</h3>
+                <div class="row">
+                {% for objet in liste %}
+                    <div class="col-md-2 mb-3">
+                        <a href="/Detail/{{ objet.id }}" class="text-decoration-none text-dark">
+                            <div class="card h-100">
+                                {% if objet.image %}
+                                    <img src="{{ url_for('static', filename='uploads/' + objet.image) }}" 
+                                        class="card-img-top img-fluid" 
+                                        alt="Image de l'objet"
+                                        style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <p class="card-text">{{ objet.post|truncate(100) }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Formulaire de recherche -->
+            <div class="border p-4 rounded shadow" style="max-width: 900px; margin: 0 auto;">
+                <h3 class="mb-3">Rechercher par établissement</h3>
+                <form action="{{ url_for('list_objet') }}" method="get">
+                    <div class="form-group mb-3">
+                        <label for="etablissement-input" class="form-label">Établissement</label>
+                        <input class="form-control" 
+                               name="etablissement"
+                               
+                               placeholder="Rechercher votre établissement"
+                               required>
+                        <datalist id="etablissement-list">
+                            {% for etablissement  in etablissements %}
+                                <option value="{{ etablissement.name }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <button  class="btn navbar-custom w-100"><p style="color: white;">Rechercher</p></button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info mt-4">
+            Aucun résultat trouvé. Essayez une autre recherche.
+        </div>
+    {% endif %}
+{% endif %}
+
+{%include "footer.html" %}

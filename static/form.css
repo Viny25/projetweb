@@ -1,0 +1,36 @@
+body {
+    background-color: rgb(241, 246, 246);
+}
+.navbar-custom {
+    background-color: #082044; 
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link,
+.navbar-custom .dropdown-item {
+    color: white !important;
+}
+.navbar-custom .navbar-toggler {
+    border-color: white;
+}
+.navbar-custom .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.footetp {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Pour s'assurer qu'il reste au-dessus des autres éléments */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Ombre légère */
+}
+
+.headerp{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Pour s'assurer qu'il reste au-dessus des autres éléments */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Ombre légère */
+}
+   
