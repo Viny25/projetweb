@@ -1,0 +1,48 @@
+{%include "header.html" %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+              
+                <div class="card-header bg-primary text-white">
+                    <h1 class="h4 mb-0">PROFIL</h1>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Image -->
+                    <div class="text-center mb-4">
+                        {% if profil.image %}
+                        <img src="{{ url_for('static', filename='uploads/' + profil.image) }}" 
+                             class="img-fluid rounded" 
+                             alt="photo de {{ profil.username }}"
+                             style="max-height: 400px; object-fit: contain;">
+                        {% else %}
+                        <div class="bg-light p-5 text-center">
+                            <i class="fas fa-image fa-5x text-muted"></i>
+                            <p class="mt-2">Aucune image disponible</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-4 p-3 border rounded bg-light">
+                        <h2 class="h5">Username</h2>
+                        <p class="mb-0">{{ profil.username }}</p>
+                    </div>
+                    
+                    <!-- Métadonnées -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded text-center">
+                                <strong>Établissement :</strong> {{ etablissement }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -165,7 +165,10 @@ class db_web():
     """Récupère le nom complet de l'établissement"""
     etab = db_fetch("SELECT name FROM etablissement WHERE id = ?", (etid,))
     return etab['name'] if etab else "Inconnu"
-
+  
+  def found_user(self,username):
+     res =db_fetch('SELECT * FROM user WHERE username = ?', (username,))
+     return res
 
 
 

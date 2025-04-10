@@ -208,10 +208,11 @@ def detail(id): #donne les detaille d'un objet
    res=model.detail_objet(int(id))
    name = session['username']
    current_et=model.get_etablissement_name(res['etid'])
-   if (model.admi_exist(name)):
-      return render_template('detail.html',session=session,courant=current_et, objet=res, admi=True)
-   else:
+   user =model.found_user(name)
+   if not(model.admi_exist(user['id'])):
       return render_template('detail.html',session=session,courant=current_et, objet=res, admi=False)
+   else:
+      return render_template('detail.html',session=session,courant=current_et, objet=res, admi=True)
 
 @app.get('/remove_obj/<id>')  
 def remove_obj(id): #permet de supprimeer un objet de la  liste 
@@ -302,3 +303,10 @@ def add_admi():
     else:
         return redirect(url_for('index'))
 
+
+@app.get('/profil')
+def profil():
+    username=session['username']
+    profil = model.found_user(username)
+    etablissement = model.get_etablissement_name(profil['etid'])
+    return render_template('profil.html', session=session,profil=profil, etablissement=etablissement)
