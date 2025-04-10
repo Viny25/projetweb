@@ -180,7 +180,7 @@ def list_objet():
             liste=objets,
             etablissements=etablissements,
             current_etablissement=etablissement_name,
-            etablissement_id=etablissement['id']  # Nouveau: passe l'ID au template
+            etablissement_id=etablissement['id']  # passe l'ID au template
         )
 
     except Exception as e:
@@ -239,8 +239,8 @@ def add_objet():
 
             # Enregistrement en base
     model.add_objet(
-        image=filename,  # Juste le nom du fichier
-        etid=etablissement['id'],  # Utilisation de l'ID
+        image=filename,  
+        etid=etablissement['id'],  
         post=post_text
         )
 
@@ -251,14 +251,14 @@ def add_objet():
     
 @app.route('/modifier_obj/<int:id>', methods=['GET'])
 def modifier_obj(id):
-    # Récupérer l'objet à modifier
     objet = model.detail_objet(id)
     courant = model.get_etablissement_name(objet['etid'])
     
     etablissements = model.liste_etablissement()
     
     return render_template('updateobjet.html', 
-                         objet=objet,courant=courant, 
+                         objet=objet,
+                         courant=courant, 
                          etablissements=etablissements)
 
 

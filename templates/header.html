@@ -21,7 +21,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if 'username'  in session %}
-            <!-- Liens pour utilisateurs connectés -->
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/index">Home</a>
             </li>
@@ -41,7 +40,6 @@
             </li>
              
             {% else %}
-             <!-- Liens pour utilisateurs non connectés -->
              <li class="nav-item">
               <a class="nav-link" href="/login">Login</a>
             </li>
