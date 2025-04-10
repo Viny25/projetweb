@@ -129,9 +129,9 @@ def login():
         error = "Username ou password incorrect"
         return render_template('login.html', error=error)
     else:
-        session.clear()  # Notez les parenthèses pour appeler la méthode
+        session.clear()  
         session['username'] = username
-        return redirect(url_for('index'))  # Redirection vers la page d'accueil
+        return redirect(url_for('index'))  
        
 @app.get('/index')
 def index():
