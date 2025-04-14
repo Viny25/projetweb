@@ -1,15 +1,18 @@
 {%include "header.html" %}
-{% if error %}
-    <div class="alert alert-danger position-relative" style="top: -30px;">
-        {{ error }}
-        <a href="/index">page d'acceil</a>
-    </div>
-{% else %}
-    {% if liste %}
+
+  
         <div class="container mt-4">
-            <!-- Liste des objets -->
+           
             <div class="border p-4 rounded shadow mb-4" style="max-width: 900px; margin: 0 auto;">
+                {% if error %}
+                    <div class="alert alert-danger position-relative" style="top: -30px;">
+                        {{ error }}
+                        <a href="/index">page d'acceil</a>
+                    </div>
+                {% endif %}
+                {% if liste %}
                 <h3 class="mb-3">Objets trouvés</h3>
+                
                 <div class="row">
                 {% for objet in liste %}
                     <div class="col-md-2 mb-3">
@@ -56,6 +59,6 @@
             Aucun résultat trouvé. Essayez une autre recherche.
         </div>
     {% endif %}
-{% endif %}
+
 
 {%include "footer.html" %}

@@ -153,9 +153,9 @@ def log_out(): #Rammene à la page d'acceil en suppriment la session
 
 
 
-                            ###########
-                            #  OBJECT #
-                            ###########
+                            ###################
+                            # Gestion  OBJECT #
+                            ###################
        
 @app.get('/index')
 def index():
@@ -279,6 +279,9 @@ def modifier_obj(id):
 
 @app.route('/modifier_obj/<int:id>', methods=['post'])
 def updateobj(id):
+    objet = model.detail_objet(id)
+    courant = model.get_etablissement_name(objet['etid'])
+    error = None
     etablissements = model.liste_etablissement()
 
     objet = model.detail_objet(id)
@@ -287,7 +290,14 @@ def updateobj(id):
     post=request.form['post']
     etablissement = request.form['etablissement']
 
-    etid=model.found_etablisement(etablissement)
+    etid=model.found_etablisement(etablissement) 
+    if not etid:
+        error = "Nous n'avont pas trouver cet etablissement" 
+        return render_template('updateobjet.html', 
+                         objet=objet,
+                         courant=courant, 
+                         etablissements=etablissements,error=error)
+    
     if image==image_file.filename or not image_file:
         res = model.update_objet(image,etid['id'],post,id)
         return redirect(url_for('detail',id=id))

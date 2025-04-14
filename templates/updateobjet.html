@@ -1,10 +1,13 @@
 {%include "header.html" %}
 <div class="min-vh-100 d-flex justify-content-center align-items-center">
-    {% if error %}
-    <p ><h2 style="color: rgb(249, 13, 13);">{{error}}</h2></p>
-    {% endif %}
+   
     <form class="border p-4 rounded shadow" style="width: 400px;" action="{{ url_for('modifier_obj', id=objet.id) }}" method="post" enctype="multipart/form-data">
-        
+        <div class="alert alert-danger text-center py-4">
+            <i class="fas fa-info-circle me-2"></i>
+            {% if error %}
+               {{error}}
+            {% endif %}
+        </div>
         <div class="mb-3">
             <label for="image" class="form-label">Image de l'objet</label>
             
