@@ -72,6 +72,10 @@ def page_accueille():
     session.clear()
     return render_template('accueille.html',session = session)
 
+                                ######################
+                                #   USER and LOGIN   #
+                                ######################
+                                 
 @app.get('/newuser')
 def newuserf():
     liste = model.liste_etablissement()
@@ -105,11 +109,20 @@ def newuser():
         return render_template('login.html',session=session,error = error)
     
     
+@app.get('/profil')
+def profil():
+    username=session['username']
+    profil = model.found_user(username)
+    etablissement = model.get_etablissement_name(profil['etid'])
+    return render_template('profil.html', session=session,profil=profil, etablissement=etablissement)
+    
+    
 
 
 @app.get('/login')
 def page_login():
     return render_template('login.html',session=session,error = None)
+
 
 @app.post('/login')
 def login():
@@ -117,12 +130,12 @@ def login():
     password = request.form.get('password')
     error = None
     
-    # Validation des entrées
+    
     if not username or not password:
         error = "Username et password requis"
         return render_template('login.html', error=error)
     
-    # Vérification des identifiants
+    
     res = model.login(username, password)
     
     if res is None:
@@ -131,7 +144,18 @@ def login():
     else:
         session.clear()  
         session['username'] = username
-        return redirect(url_for('index'))  
+        return redirect(url_for('index')) 
+    
+@app.get('/logout')
+def log_out(): #Rammene à la page d'acceil en suppriment la session 
+   session.clear()
+   return redirect(url_for('page_accueille'))
+
+
+
+                            ###########
+                            #  OBJECT #
+                            ###########
        
 @app.get('/index')
 def index():
@@ -194,15 +218,6 @@ def newobjet():
 
     return render_template('creatobjet.html',session=session,etablissements=etablissement)
 
-      
-
-@app.get('/logout')
-def log_out(): #Rammene à la page d'acceil en suppriment la session 
-   session.clear()
-   return redirect(url_for('page_accueille'))
-
-
-
 @app.get('/Detail/<id>')
 def detail(id): #donne les detaille d'un objet
    res=model.detail_objet(int(id))
@@ -233,7 +248,7 @@ def add_objet():
     etablissement= model.found_etablisement(etablissement_name)
     if etablissement is None:
         error =('Établissement invalide', 'error')
-        return render_template('creatobjet.html',session=session,etablissements=etablissement)
+        return render_template('creatobjet.html',session=session,etablissements=etablissement,error=error)
 
     filename = save_uploaded_file(image_file)
 
@@ -283,6 +298,13 @@ def updateobj(id):
     return redirect(url_for('detail',id=id))
 
 
+                                        ######################
+                                        #   administrateur   #
+                                        ######################
+
+
+
+
 @app.get('/admi')
 def  admi():
     error=None
@@ -303,10 +325,3 @@ def add_admi():
     else:
         return redirect(url_for('index'))
 
-
-@app.get('/profil')
-def profil():
-    username=session['username']
-    profil = model.found_user(username)
-    etablissement = model.get_etablissement_name(profil['etid'])
-    return render_template('profil.html', session=session,profil=profil, etablissement=etablissement)
