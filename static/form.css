@@ -33,4 +33,12 @@ body {
     z-index: 1000; /* Pour s'assurer qu'il reste au-dessus des autres éléments */
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Ombre légère */
 }
-   
+  
+.ma-section {
+    background-image: url('/static/lost.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 600px;
+    width: 100%;
+  }

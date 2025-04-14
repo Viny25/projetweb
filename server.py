@@ -160,7 +160,7 @@ def log_out(): #Rammene à la page d'acceil en suppriment la session
 @app.get('/index')
 def index():
     res = model.list_objet()
-    etablissement = model.liste_etablissement() or []  # Toujours défini
+    etablissements = model.liste_etablissement() or []  # Toujours défini
     error = None
     liste = None
 
@@ -170,15 +170,16 @@ def index():
             session=session, 
             liste=liste,  # Utilise `liste` si défini, sinon `res`
             error=error, 
-            etablissements=etablissement
+            etablissements=etablissements
             )
     if (error is None):
+        #dico_res = dict(list(res.items())[:10]) if len(res) > 10 else res.copy()
 
         return render_template('index.html', 
             session=session, 
-            liste=res,  # Utilise `liste` si défini, sinon `res`
+            liste=res,  # Utilise liste si défini, sinon res
             error=error, 
-            etablissements=etablissement
+            etablissements=etablissements
             )
 
 @app.get('/list')

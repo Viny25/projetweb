@@ -14,6 +14,9 @@ def main():
     print(f"Type retourné: {type(objets)}")
     print(f"Nombre d'objets: {len(objets)}")
     print("Détail du premier objet:", objets[2] if objets else "vide")
+    etablissements = model.liste_etablissement()
+    etablissement= dict(list(etablissements.items())[:10]) if len(etablissements) > 10 else etablissements
+    print("les 10 premiers element  de la liste :" , len(etablissements),"/n" ,etablissement, len(etablissement))
 
 if __name__ == '__main__':
     main()
