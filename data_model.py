@@ -10,7 +10,9 @@ DBFILENAME = 'univ.sqlite'
 
 
 
-
+                      ######################
+                      #   BASE DE DONNEE   #
+                      ######################
 # Utility functions
 def db_fetch(query, args=(), all=False, db_name=DBFILENAME):
     try:
@@ -50,9 +52,17 @@ def db_update(query, args=(), db_name=DBFILENAME):
     cur = conn.execute(query, args)
     conn.commit()
     return cur.rowcount
+  
+
 class db_web():
   def __init__(self):
     pass
+
+                      #######################
+                      #   Gestion d'objet   #
+                      #######################
+
+
 
   def detail_objet(self,id):
     found=db_fetch('SELECT * FROM objet WHERE id=?',(id,))
@@ -61,33 +71,53 @@ class db_web():
   def list_objets(self,etid):
     res= db_fetch('SELECT * FROM objet WHERE etid=?',(etid,),all=True)
     return res
+  
+  def update_objet(self,image,etid,post,id):
+    res =db_update('UPDATE objet SET image = ?, etid = ?, post =? WHERE id = ?',(image,etid,post,id))
+    return res
+  
+  def delete_obj(self,id):
+    db_run('DELETE FROM objet WHERE id = ?', (id,))
+
+
+  def add_objet(self,image,etid,post ) :
+    res=db_insert('INSERT INTO objet(image,etid,post) VALUES(?,?,?)',(image,etid,post))
+    return res
+  
+  def list_objet(self):
+    try:
+        res = db_fetch('SELECT * FROM objet ORDER BY id', all=True)
+        if res is None:  
+            print("Aucun résultat ou erreur de requête")
+            return []
+        return res
+    except Exception as e:
+        print(f"Erreur dans list_objet: {e}")
+        return []
+
+
+
+                      ###################
+                      #   Gestion User  # 
+                      ###################        
+
 
   def user_read(self,id):
     found =db_fetch('SELECT * FROM user WHERE id = ?', (id,))
     return found['id']
 
-  def update_objet(self,image,etid,post,id):
-    res =db_update('UPDATE objet SET image = ?, etid = ?, post =? WHERE id = ?',(image,etid,post,id))
-    return res
-
-  def delete_obj(self,id):
-    db_run('DELETE FROM objet WHERE id = ?', (id,))
-
-
-
+  
   def delete_user(self,id):
     db_run('DELETE FROM user WHERE id = ?', (id,))
 
-  def found_etablisement(self,name):
-    res = db_fetch('SELECT * FROM etablissement WHERE name = ?', (name,))
-    return res
 
   def user_password(self,id,password):
-    result = db_fetch('SELECT * FROM password WHERE userid=?', (id,))
-    if(not(check_password_hash(result['password'], password))):
-      return None
-    else:
-      return id 
+      result = db_fetch('SELECT * FROM password WHERE userid=?', (id,))
+      if(not(check_password_hash(result['password'], password))):
+        return None
+      else:
+        return id 
+      
 
   def login(self,username, password ):
     result = db_fetch('SELECT * FROM user WHERE username=?', (username,))
@@ -112,11 +142,15 @@ class db_web():
     user_id=res
     passeword=db_insert('INSERT INTO password(userid,password)VALUES(?,?)',(res,hash))
     return(self.user_read(user_id))
-
-  def add_objet(self,image,etid,post ) :
-    res=db_insert('INSERT INTO objet(image,etid,post) VALUES(?,?,?)',(image,etid,post))
-    return res
   
+  def found_user(self,username):
+     res =db_fetch('SELECT * FROM user WHERE username = ?', (username,))
+     return res
+  
+                        ######################
+                        #   Gestion d'admis  #
+                        ######################   
+
   def admi_exist(self, userid):
     res = db_fetch('SELECT * FROM admis WHERE userid = ?', (userid,))
     return res is not None  
@@ -142,34 +176,20 @@ class db_web():
       
   
   
-  def list_objet(self):
-    try:
-        res = db_fetch('SELECT * FROM objet ORDER BY id', all=True)
-        if res is None:  
-            print("Aucun résultat ou erreur de requête")
-            return []
-        return res
-    except Exception as e:
-        print(f"Erreur dans list_objet: {e}")
-        return []
-
- 
+                      ################################
+                      #   Gestion d'etaablissement   #
+                      ################################        
+  def found_etablisement(self,name):
+    res = db_fetch('SELECT * FROM etablissement WHERE name = ?', (name,))
+    return res
+  
+  
   def liste_etablissement(self):
     res= db_fetch('SELECT * FROM etablissement order by id', all= True) 
     return res
-  
-
   
 
   def get_etablissement_name(self, etid):
     """Récupère le nom complet de l'établissement"""
     etab = db_fetch("SELECT name FROM etablissement WHERE id = ?", (etid,))
     return etab['name'] if etab else "Inconnu"
-  
-  def found_user(self,username):
-     res =db_fetch('SELECT * FROM user WHERE username = ?', (username,))
-     return res
-
-
-
-

@@ -303,8 +303,6 @@ def updateobj(id):
                                         ######################
 
 
-
-
 @app.get('/admi')
 def  admi():
     error=None
