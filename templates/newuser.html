@@ -5,9 +5,14 @@
    
     <form class="border p-4 rounded shadow bg-white" style="width: 100%; max-width: 400px;" 
           action="/newuser" method="post" enctype="multipart/form-data">
-        {% if error %}
-          {{error}}
+          {% if error %}
+        <div class="alert alert-danger mb-3">
+            {{error}}
+        </div>
         {% endif %}
+        
+         
+       
         
         <h2 class="mb-4 text-center">Création de compte</h2>
         

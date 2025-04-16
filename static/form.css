@@ -15,7 +15,14 @@ body {
 .navbar-custom .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
-
+.clignotant-rouge {
+    animation: clignoter-rouge 0.8s infinite;
+  }
+  
+  @keyframes clignoter-rouge {
+    0%, 100% { color: rgb(182, 167, 167); opacity: 3; }
+    50% { color: rgb(166, 145, 213); opacity: 3; }
+  }
 .footetp {
     position: fixed;
     bottom: 0;
@@ -34,11 +41,3 @@ body {
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Ombre légère */
 }
   
-.ma-section {
-    background-image: url('/static/lost.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 600px;
-    width: 100%;
-  }

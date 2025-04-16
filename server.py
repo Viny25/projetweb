@@ -75,6 +75,28 @@ def page_accueille():
                                 ######################
                                 #   USER and LOGIN   #
                                 ######################
+
+@app.post('/login')
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    error = None
+    
+    
+    if not username or not password:
+        error = "Username et password requis"
+        return render_template('login.html', error=error)
+    
+    
+    res = model.login(username, password)
+    
+    if res is None:
+        error = "Username ou password incorrect"
+        return render_template('login.html', error=error)
+    else:
+        session.clear()  
+        session['username'] = username
+        return redirect(url_for('index')) 
                                  
 @app.get('/newuser')
 def newuserf():
@@ -101,7 +123,7 @@ def newuser():
     etablissement= model.found_etablisement(etablissement_name)
     if etablissement is None:
         error =('Établissement invalide', 'error')
-        return render_template('newuser.html',session=session,etablissements=etablissement,error=error)
+        return render_template('newuser.html',session=session,etablissements=etablissements,error=error)
     image_filename=save_uploaded_file(image_file)
     res=model.user_insert(username,password,image_filename,etablissement['id'])
     if res:
@@ -124,27 +146,7 @@ def page_login():
     return render_template('login.html',session=session,error = None)
 
 
-@app.post('/login')
-def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    error = None
-    
-    
-    if not username or not password:
-        error = "Username et password requis"
-        return render_template('login.html', error=error)
-    
-    
-    res = model.login(username, password)
-    
-    if res is None:
-        error = "Username ou password incorrect"
-        return render_template('login.html', error=error)
-    else:
-        session.clear()  
-        session['username'] = username
-        return redirect(url_for('index')) 
+
     
 @app.get('/logout')
 def log_out(): #Rammene à la page d'acceil en suppriment la session 
@@ -185,16 +187,18 @@ def index():
 @app.get('/list')
 def list_objet():
     try:
+        res = model.list_objet()
         etablissement_name = request.args.get('etablissement', '').strip()
         
         if not etablissement_name:
-            flash("Veuillez sélectionner un établissement", "warning")
-            return redirect(url_for('choose_etablissement'))  # Redirige vers une page de sélection
+            error=("Veuillez sélectionner un établissement", "warning")
+            return redirect(url_for('index', error = error))
 
         etablissement = model.found_etablisement(etablissement_name)
         if not etablissement:
-            flash("Établissement non trouvé", "error")
-            return redirect(url_for('choose_etablissement'))
+            error=("Établissement non trouvé", "error")
+            return  redirect(url_for('index', error = error))
+
 
         objets = model.list_objets(etablissement['id'])
         etablissements = model.liste_etablissement()
