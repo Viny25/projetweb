@@ -53,22 +53,26 @@
             <p class="fw-bold"><h4 class="clignotant-rouge">LOSTBUTFOUNDS</h4> </p>
           </div>
          
-          <!-- Formulaire de recherche (toujours visible) -->
           {% if 'username'  in session %}
           <form class="d-flex" role="search" action="{{ url_for('list_objet') }}" method="get">
-            <label for="etablissement-input" class="form-label me-2">Établissement</label>
-                        <input class="form-control" 
-                               name="etablissement"
-                               
-                               placeholder="Rechercher votre établissement"
-                               required>
-                        <datalist id="etablissement-list">
-                            {% for etablissement  in etablissements %}
-                                <option value="{{ etablissement.name }}">
-                            {% endfor %}
-                        </datalist>
+            <label for="etablissement-input" class="form-label me-2"></label>
+            <input class="form-control me-2" 
+                   type="search"  
+                   id="etablissement-input"
+                   name="etablissement"
+                   list="etablissement-options"
+                   placeholder="Rechercher votre établissement"
+                   required
+                   autocomplete="off"> 
+            
+            <datalist id="etablissement-options">
+                {% for etablissement in etablissements %}
+                    <option value="{{ etablissement.name }}">
+                {% endfor %}
+            </datalist>
+            
             <button class="btn btn-outline-light" type="submit">Search</button>
-          </form>
+        </form>
           {% endif %}
         </div>
       </div>

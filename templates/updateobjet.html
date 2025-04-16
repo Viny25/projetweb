@@ -2,12 +2,14 @@
 <div class="min-vh-100 d-flex justify-content-center align-items-center">
    
     <form class="border p-4 rounded shadow" style="width: 400px;" action="{{ url_for('modifier_obj', id=objet.id) }}" method="post" enctype="multipart/form-data">
+        {% if error %}
         <div class="alert alert-danger text-center py-4">
             <i class="fas fa-info-circle me-2"></i>
-            {% if error %}
+           
                {{error}}
-            {% endif %}
+           
         </div>
+        {% endif %}
         <div class="mb-3">
             <label for="image" class="form-label">Image de l'objet</label>
             
@@ -27,15 +29,21 @@
         </div>
         
         <div class="mb-3">
-            <label for="etablissement" class="form-label">Établissement</label>
-            <input class="form-control" name="etablissement" list="etablissement" 
-                   id="etablissement" placeholder="Votre établissement" value="{{courant}}" required>
-            <datalist id="etablissement">
-                {% if etablissements %}
-                    {% for etablissement in etablissements %}
-                        <option value="{{ etablissement.name }}">
-                    {% endfor %}
-                {% endif %}
+            <label for="etablissement-input" class="form-label me-2">Établissement</label>
+            <input class="form-control me-2" 
+                   type="search" 
+                   value="{{courant}}" 
+                   id="etablissement-input"
+                   name="etablissement"
+                   list="etablissement-options"
+                   placeholder="Rechercher votre établissement"
+                   required
+                   autocomplete="off">  <!-- Désactive l'autocomplétion navigateur -->
+            
+            <datalist id="etablissement-options">
+                {% for etablissement in etablissements %}
+                    <option value="{{ etablissement.name }}">
+                {% endfor %}
             </datalist>
         </div>
         

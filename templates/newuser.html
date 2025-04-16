@@ -38,12 +38,19 @@
         
         
         <div class="mb-3">
-            <label for="etablissement" class="form-label">Établissement</label>
-            <input class="form-control" name="etablissement" id="etablissement"
-                   list="etablissement-list" placeholder="Sélectionnez votre établissement" required>
-            <datalist id="etablissement-list">
-                {% for etab in etablissements %}
-                <option value="{{ etab.name }}">
+            <label for="etablissement-input" class="form-label me-2">Établissement</label>
+            <input class="form-control me-2" 
+                   type="search"  
+                   id="etablissement-input"
+                   name="etablissement"
+                   list="etablissement-options"
+                   placeholder="Rechercher votre établissement"
+                   required
+                   autocomplete="off">  <!-- Désactive l'autocomplétion navigateur -->
+            
+            <datalist id="etablissement-options">
+                {% for etablissement in etablissements %}
+                    <option value="{{ etablissement.name }}">
                 {% endfor %}
             </datalist>
         </div>

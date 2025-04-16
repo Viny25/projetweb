@@ -102,7 +102,7 @@ def login():
 def newuserf():
     liste = model.liste_etablissement()
     error = None
-    return(render_template('newuser.html', session=session, liste = liste,error = error ))
+    return(render_template('newuser.html', session=session, etablissements = liste,error = error ))
 
 
 @app.post('/newuser')
@@ -136,7 +136,7 @@ def profil():
     username=session['username']
     profil = model.found_user(username)
     etablissement = model.get_etablissement_name(profil['etid'])
-    return render_template('profil.html', session=session,profil=profil, etablissement=etablissement)
+    return render_template('profil.html', session=session,profil=profil, etablissements=etablissement)
     
     
 
