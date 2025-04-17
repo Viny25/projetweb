@@ -177,7 +177,7 @@ class db_web():
   
   
                       ################################
-                      #   Gestion d'etaablissement   #
+                      #   Gestion d'etablissement   #
                       ################################        
   def found_etablisement(self,name):
     res = db_fetch('SELECT * FROM etablissement WHERE name = ?', (name,))

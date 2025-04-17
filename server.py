@@ -136,7 +136,7 @@ def profil():
     username=session['username']
     profil = model.found_user(username)
     etablissement = model.get_etablissement_name(profil['etid'])
-    return render_template('profil.html', session=session,profil=profil, etablissements=etablissement)
+    return render_template('profil.html', session=session,profil=profil, etablissement=etablissement)
     
     
 
