@@ -4,14 +4,17 @@ import os
 import uuid
 from flask import Flask, current_app, flash, session, Response, request, redirect, url_for, render_template
 import data_model as data_model
-import itertools
+
 
 app = Flask(__name__)
+
+
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limite de 16MB
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+app.secret_key = b'0a1078efe8aacfd516ee04234c087d78059c77e463b88b9c5ead55c05f2fa06b'
 
 
 
@@ -58,7 +61,7 @@ def save_uploaded_file( file):
 
 
 model=data_model.db_web()
-app.secret_key = b'0a1078efe8aacfd516ee04234c087d78059c77e463b88b9c5ead55c05f2fa06b'
+
 
 
 @app.template_filter('datetimeformat')
